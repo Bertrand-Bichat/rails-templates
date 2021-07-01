@@ -140,6 +140,27 @@ RUBY
 
 environment generators
 
+# FR language
+########################################
+inject_into_file 'config/application.rb', after: 'config.load_defaults 5.2' do
+  <<~RUBY
+
+    # Set the default local language
+    config.i18n.default_locale = :fr
+
+    # hearders for security
+    config.action_dispatch.default_headers = {
+      'X-Frame-Options' => 'SAMEORIGIN',
+      'X-XSS-Protection' => '1; mode=block',
+      'X-Content-Type-Options' => 'nosniff',
+      'X-Download-Options' => 'noopen',
+      'X-Permitted-Cross-Domain-Policies' => 'none',
+      'Referrer-Policy' => 'strict-origin-when-cross-origin',
+      'Access-Control-Allow-Origin' => '*'
+    }
+  RUBY
+end
+
 ########################################
 # AFTER BUNDLE
 ########################################
