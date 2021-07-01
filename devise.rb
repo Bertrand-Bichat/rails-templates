@@ -358,7 +358,7 @@ after_bundle do
 
   # Pundit install
   ########################################
-  rails_command 'generate pundit:install'
+  generate('pundit:install')
 
   # Pundit default policy
   ########################################
