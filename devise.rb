@@ -20,6 +20,13 @@ inject_into_file 'Gemfile', after: 'group :development, :test do' do
   RUBY
 end
 
+# Procfile
+########################################
+file 'Procfile', <<~YAML
+  release: bundle exec rails db:migrate
+  web: bundle exec puma -C config/puma.rb
+YAML
+
 gsub_file('Gemfile', /# gem 'redis'/, "gem 'redis'")
 
 # Assets

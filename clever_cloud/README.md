@@ -12,7 +12,7 @@ Get a minimal rails 5.1+ app ready to be deployed on Clever Cloud with Bootstrap
 rails new \
   --database postgresql \
   --webpack \
-  -m https://raw.githubusercontent.com/lewagon/rails-templates/master/clever_cloud/minimal.rb \
+  -m https://raw.githubusercontent.com/Bertrand-Bichat/rails-templates/master/clever_cloud/minimal.rb \
   CHANGE_THIS_TO_YOUR_RAILS_APP_NAME
 ```
 
@@ -24,6 +24,6 @@ Same as minimal **plus** a Devise install with a generated `User` model.
 rails new \
   --database postgresql \
   --webpack \
-  -m https://raw.githubusercontent.com/lewagon/rails-templates/master/clever_cloud/devise.rb \
+  -m https://raw.githubusercontent.com/Bertrand-Bichat/rails-templates/master/clever_cloud/devise.rb \
   CHANGE_THIS_TO_YOUR_RAILS_APP_NAME
 ```
