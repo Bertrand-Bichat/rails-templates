@@ -22,6 +22,7 @@ end
 
 inject_into_file 'Gemfile', after: 'group :development do' do
   <<-RUBY
+
   gem 'bullet'
   gem 'rack-mini-profiler'
   RUBY
@@ -29,13 +30,15 @@ end
 
 # N+1 query (bullet)
 ########################################
-inject_into_file 'config/environments/development.rb', after: 'config.file_watcher' do
+inject_into_file 'config/environments/development.rb', before: 'config.file_watcher' do
   <<~RUBY
-    # Bullet N+1 query
-    config.after_initialize do
-      Bullet.enable = true
-      Bullet.rails_logger = true
-    end
+
+      # Bullet N+1 query
+      config.after_initialize do
+        Bullet.enable = true
+        Bullet.rails_logger = true
+      end
+
   RUBY
 end
 

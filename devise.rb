@@ -5,7 +5,6 @@ run "if uname | grep -q 'Darwin'; then pgrep spring | xargs kill -9; fi"
 inject_into_file 'Gemfile', before: 'group :development, :test do' do
   <<~RUBY
     gem 'devise'
-
     gem 'autoprefixer-rails', '10.2.5'
     gem 'font-awesome-sass'
     gem 'simple_form'
@@ -16,6 +15,7 @@ end
 
 inject_into_file 'Gemfile', after: 'group :development, :test do' do
   <<-RUBY
+
   gem 'pry-byebug'
   gem 'pry-rails'
   gem 'dotenv-rails'
@@ -24,6 +24,7 @@ end
 
 inject_into_file 'Gemfile', after: 'group :development do' do
   <<-RUBY
+
   gem 'bullet'
   gem 'rack-mini-profiler'
   RUBY
@@ -34,11 +35,11 @@ end
 inject_into_file 'config/environments/development.rb', before: 'config.file_watcher' do
   <<~RUBY
 
-    # Bullet N+1 query
-    config.after_initialize do
-      Bullet.enable = true
-      Bullet.rails_logger = true
-    end
+      # Bullet N+1 query
+      config.after_initialize do
+        Bullet.enable = true
+        Bullet.rails_logger = true
+      end
 
   RUBY
 end
@@ -170,7 +171,7 @@ after_bundle do
 
   # Pundit install
   ########################################
-  generate('pundit:install')
+  rails_command 'g pundit:install'
 
   # Pundit default policy
   ########################################
