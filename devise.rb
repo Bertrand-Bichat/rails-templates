@@ -44,6 +44,19 @@ inject_into_file 'config/environments/development.rb', before: 'config.file_watc
   RUBY
 end
 
+# cache control expire
+########################################
+inject_into_file 'config/environments/production.rb', before: '# Compress JavaScripts and CSS.' do
+  <<~RUBY
+
+    config.public_file_server.headers = {
+      'Cache-Control' => 'public, s-maxage=31536000, max-age=15552000',
+      'Expires' => "#{1.year.from_now.to_formatted_s(:rfc822)}"
+    }
+
+  RUBY
+end
+
 # Procfile
 ########################################
 file 'Procfile', <<~YAML
@@ -149,6 +162,7 @@ environment generators
 inject_into_file 'config/application.rb', after: 'config.load_defaults 5.2' do
   <<~RUBY
 
+
     # Set the default local language
     config.i18n.default_locale = :fr
 
@@ -164,8 +178,6 @@ inject_into_file 'config/application.rb', after: 'config.load_defaults 5.2' do
     }
   RUBY
 end
-
-
 
 ########################################
 # AFTER BUNDLE
@@ -441,7 +453,6 @@ after_bundle do
           not_saved:
             one: "1 erreur a empêché ce(tte) %{resource} d'être sauvegardé(e) :"
             other: "%{count} erreurs ont empêché ce(tte) %{resource} d'être sauvegardé(e) :"
-
   YAML
 
   # Other fr translation
@@ -665,7 +676,6 @@ after_bundle do
           long: "%A %d %B %Y %Hh%M"
           short: "%d %b %Hh%M"
         pm: pm
-
   YAML
 
   # Other fr translation
@@ -703,7 +713,6 @@ after_bundle do
         # prompts:
         #   defaults:
         #     age: 'Select your age'
-
   YAML
 
   # Dotenv
