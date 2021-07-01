@@ -9,6 +9,8 @@ inject_into_file 'Gemfile', before: 'group :development, :test do' do
     gem 'autoprefixer-rails', '10.2.5'
     gem 'font-awesome-sass'
     gem 'simple_form'
+    gem 'bullet', group: 'development'
+    gem 'rack-mini-profiler'
   RUBY
 end
 
@@ -17,6 +19,18 @@ inject_into_file 'Gemfile', after: 'group :development, :test do' do
   gem 'pry-byebug'
   gem 'pry-rails'
   gem 'dotenv-rails'
+  RUBY
+end
+
+# N+1 query (bullet)
+########################################
+inject_into_file 'config/environments/development.rb', after: 'config.public_file_server.enabled' do
+  <<~RUBY
+    # Bullet N+1 query
+    config.after_initialize do
+      Bullet.enable = true
+      Bullet.rails_logger = true
+    end
   RUBY
 end
 
@@ -35,6 +49,14 @@ run 'rm -rf app/assets/stylesheets'
 run 'rm -rf vendor'
 run 'curl -L https://github.com/lewagon/rails-stylesheets/archive/master.zip > stylesheets.zip'
 run 'unzip stylesheets.zip -d app/assets && rm stylesheets.zip && mv app/assets/rails-stylesheets-master app/assets/stylesheets'
+
+# robots.txt
+########################################
+run 'rm -rf public/robots.txt'
+file 'public/robots.txt', <<~TXT
+  User-agent: *
+  Disallow: /
+TXT
 
 # Dev environment
 ########################################
