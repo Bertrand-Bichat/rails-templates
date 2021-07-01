@@ -197,8 +197,7 @@ after_bundle do
   run 'rm app/controllers/application_controller.rb'
   file 'app/controllers/application_controller.rb', <<~RUBY
     class ApplicationController < ActionController::Base
-      #{"protect_from_forgery with: :exception\n" if Rails.version < "5.2"}
-      before_action :authenticate_user!
+      #{"protect_from_forgery with: :exception\n" if Rails.version < "5.2"}  before_action :authenticate_user!
       # stock la page actuelle avant d'authentifier l'utilisateur afin de pouvoir revenir dessus après le login
       before_action :store_user_location!, if: :storable_location?
       before_action :configure_permitted_parameters, if: :devise_controller?
@@ -356,37 +355,6 @@ after_bundle do
   ########################################
   run 'curl -L https://raw.githubusercontent.com/lewagon/rails-templates/master/.rubocop.yml > .rubocop.yml'
 
-  # Pundit install
-  ########################################
-  generate('pundit:install')
-
-  # Pundit default policy
-  ########################################
-  inject_into_file 'app/policies/application_policy.rb', before: 'class Scope' do
-    <<~RUBY
-
-      def user_loggedin?
-        user != nil
-      end
-
-    RUBY
-  end
-
-  # Pundit page policy
-  ########################################
-  file 'app/policies/page_policy.rb', <<~RUBY
-    class PagePolicy < Struct.new(:user, :page)
-
-      def home?
-        true
-      end
-
-      def user_loggedin?
-        user != nil
-      end
-    end
-  RUBY
-
   # Git
   ########################################
   git add: '.'
@@ -395,3 +363,34 @@ after_bundle do
   # Fix puma config
   gsub_file('config/puma.rb', 'pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }', '# pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }')
 end
+
+# Pundit install
+########################################
+generate('pundit:install')
+
+# Pundit default policy
+########################################
+inject_into_file 'app/policies/application_policy.rb', before: 'class Scope' do
+  <<~RUBY
+
+    def user_loggedin?
+      user != nil
+    end
+
+  RUBY
+end
+
+# Pundit page policy
+########################################
+file 'app/policies/page_policy.rb', <<~RUBY
+  class PagePolicy < Struct.new(:user, :page)
+
+    def home?
+      true
+    end
+
+    def user_loggedin?
+      user != nil
+    end
+  end
+RUBY
