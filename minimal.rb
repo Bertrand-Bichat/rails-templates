@@ -7,8 +7,7 @@ inject_into_file 'Gemfile', before: 'group :development, :test do' do
     gem 'autoprefixer-rails', '10.2.5'
     gem 'font-awesome-sass'
     gem 'simple_form'
-    gem 'bullet', group: 'development'
-    gem 'rack-mini-profiler'
+
   RUBY
 end
 
@@ -21,9 +20,16 @@ inject_into_file 'Gemfile', after: 'group :development, :test do' do
   RUBY
 end
 
+inject_into_file 'Gemfile', after: 'group :development do' do
+  <<-RUBY
+  gem 'bullet'
+  gem 'rack-mini-profiler'
+  RUBY
+end
+
 # N+1 query (bullet)
 ########################################
-inject_into_file 'config/environments/development.rb', after: 'config.public_file_server.enabled' do
+inject_into_file 'config/environments/development.rb', after: 'config.file_watcher' do
   <<~RUBY
     # Bullet N+1 query
     config.after_initialize do
