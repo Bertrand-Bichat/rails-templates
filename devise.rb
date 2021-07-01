@@ -169,37 +169,6 @@ after_bundle do
   generate('devise:install')
   generate('devise', 'User')
 
-  # Pundit install
-  ########################################
-  rails_command 'g pundit:install'
-
-  # Pundit default policy
-  ########################################
-  inject_into_file 'app/policies/application_policy.rb', before: 'class Scope' do
-    <<~RUBY
-
-      def user_loggedin?
-        user != nil
-      end
-
-    RUBY
-  end
-
-  # Pundit page policy
-  ########################################
-  file 'app/policies/page_policy.rb', <<~RUBY
-    class PagePolicy < Struct.new(:user, :page)
-
-      def home?
-        true
-      end
-
-      def user_loggedin?
-        user != nil
-      end
-    end
-  RUBY
-
   # Devise helpers methods
   ########################################
   file 'app/helpers/devise_helper.rb', <<~RUBY
@@ -386,6 +355,37 @@ after_bundle do
   # Rubocop
   ########################################
   run 'curl -L https://raw.githubusercontent.com/lewagon/rails-templates/master/.rubocop.yml > .rubocop.yml'
+
+  # Pundit install
+  ########################################
+  rails_command 'generate pundit:install'
+
+  # Pundit default policy
+  ########################################
+  inject_into_file 'app/policies/application_policy.rb', before: 'class Scope' do
+    <<~RUBY
+
+      def user_loggedin?
+        user != nil
+      end
+
+    RUBY
+  end
+
+  # Pundit page policy
+  ########################################
+  file 'app/policies/page_policy.rb', <<~RUBY
+    class PagePolicy < Struct.new(:user, :page)
+
+      def home?
+        true
+      end
+
+      def user_loggedin?
+        user != nil
+      end
+    end
+  RUBY
 
   # Git
   ########################################
