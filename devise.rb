@@ -31,8 +31,9 @@ end
 
 # N+1 query (bullet)
 ########################################
-inject_into_file 'config/environments/development.rb', after: 'config.file_watcher' do
+inject_into_file 'config/environments/development.rb', after: 'config.file_watcher = ActiveSupport::EventedFileUpdateChecker' do
   <<~RUBY
+
     # Bullet N+1 query
     config.after_initialize do
       Bullet.enable = true
