@@ -32,14 +32,14 @@ end
 
 # N+1 query (bullet)
 ########################################
-inject_into_file 'config/environments/development.rb', before: 'config.file_watcher' do
+inject_into_file 'config/environments/development.rb', after: 'Rails.application.configure do' do
   <<~RUBY
 
-      # Bullet N+1 query
-      config.after_initialize do
-        Bullet.enable = true
-        Bullet.rails_logger = true
-      end
+    # Bullet N+1 query
+    config.after_initialize do
+      Bullet.enable = true
+      Bullet.rails_logger = true
+    end
 
   RUBY
 end
@@ -142,7 +142,7 @@ environment generators
 
 # FR language
 ########################################
-inject_into_file 'config/application.rb', after: 'config.load_defaults 5.2' do
+inject_into_file 'config/application.rb', after: 'class Application < Rails::Application' do
   <<~RUBY
 
     # Set the default local language
