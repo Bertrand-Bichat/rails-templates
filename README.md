@@ -1,7 +1,8 @@
 # Rails Templates
 
 Quickly generate a rails app with the default [Wagon](https://www.lewagon.com) configuration
-using [Rails Templates](http://guides.rubyonrails.org/rails_application_templates.html).
+using [Rails Templates](http://guides.rubyonrails.org/rails_application_templates.html) +
+some custom personal additions.
 
 
 ## Minimal
@@ -18,7 +19,9 @@ rails new \
 
 ## Devise
 
-Same as minimal **plus** a Devise install with a generated `User` model.
+Same as minimal **plus** a Devise install with a generated `User` model + Pundit authorization gem +
+N+1 queries gems + Procfile ready to use for Heroku + robots.txt file configured to not index all
+the website + YAML files for French translation of Devise and Simple Form flashes.
 
 ```bash
 rails new \
