@@ -99,6 +99,27 @@ style = <<~HTML
 HTML
 gsub_file('app/views/layouts/application.html.erb', "<%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>", style)
 
+# Flashes
+########################################
+file 'app/views/shared/_flashes.html.erb', <<~HTML
+  <% if notice %>
+    <div class="alert alert-info alert-dismissible fade show m-1" role="status">
+      <%= notice %>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Fermer">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  <% end %>
+  <% if alert %>
+    <div class="alert alert-warning alert-dismissible fade show m-1" role="alert">
+      <%= alert %>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Fermer">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  <% end %>
+HTML
+
 # Navbar & footer
 ########################################
 run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/_navbar_wagon_without_login.html.erb > app/views/shared/_navbar.html.erb'
@@ -146,6 +167,9 @@ file 'app/views/layouts/application.html.erb', <<~HTML
     </head>
 
     <body>
+      <!-- notices & alerts -->
+      <%= render 'shared/flashes' %>
+
       <!-- navbar -->
       <%= render 'shared/navbar' %>
 
