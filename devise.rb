@@ -32,30 +32,30 @@ end
 
 # N+1 query (bullet)
 ########################################
-# inject_into_file 'config/environments/development.rb', before: '# Use an evented file watcher to asynchronously detect changes in source code,' do
-#   <<~RUBY
-
-#     # Bullet N+1 query
-#     config.after_initialize do
-#       Bullet.enable = true
-#       Bullet.rails_logger = true
-#     end
-
-#   RUBY
-# end
-
-# cache control expire
-########################################
-inject_into_file 'config/environments/production.rb', before: '# Compress JavaScripts and CSS.' do
+inject_into_file 'config/environments/development.rb', before: '# Use an evented file watcher to asynchronously detect changes in source code,' do
   <<~RUBY
 
-    config.public_file_server.headers = {
-      'Cache-Control' => 'public, s-maxage=31536000, max-age=15552000',
-      'Expires' => "#{1.year.from_now.to_formatted_s(:rfc822)}"
-    }
+    # Bullet N+1 query
+    config.after_initialize do
+      Bullet.enable = true
+      Bullet.rails_logger = true
+    end
 
   RUBY
 end
+
+# cache control expire
+########################################
+# inject_into_file 'config/environments/production.rb', before: '# Compress JavaScripts and CSS.' do
+#   <<~RUBY
+
+#     config.public_file_server.headers = {
+#       'Cache-Control' => 'public, s-maxage=31536000, max-age=15552000',
+#       'Expires' => "#{1.year.from_now.to_formatted_s(:rfc822)}"
+#     }
+
+#   RUBY
+# end
 
 # Procfile
 ########################################
