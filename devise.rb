@@ -111,9 +111,9 @@ gsub_file('app/views/layouts/application.html.erb', "<%= stylesheet_link_tag 'ap
 ########################################
 file 'app/views/shared/_flashes.html.erb', <<~HTML
   <% if notice %>
-    <div class="alert alert-info alert-dismissible fade show m-1" role="alert">
+    <div class="alert alert-info alert-dismissible fade show m-1" role="status">
       <%= notice %>
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Fermer">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
@@ -121,22 +121,76 @@ file 'app/views/shared/_flashes.html.erb', <<~HTML
   <% if alert %>
     <div class="alert alert-warning alert-dismissible fade show m-1" role="alert">
       <%= alert %>
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Fermer">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
   <% end %>
 HTML
 
-run 'curl -L https://github.com/lewagon/awesome-navbars/raw/master/templates/_navbar_wagon.html.erb > app/views/shared/_navbar.html.erb'
+run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/_navbar_wagon.html.erb > app/views/shared/_navbar.html.erb'
+run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/_footer_bertrand.html.erb > app/views/shared/_footer.html.erb'
+run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/_footer.scss > app/assets/stylesheets/components/_footer.scss'
 
-inject_into_file 'app/views/layouts/application.html.erb', after: '<body>' do
-  <<-HTML
+inject_into_file 'app/assets/stylesheets/components/_index.scss', after: '@import "navbar";' do
+  <<-CSS
 
-    <%= render 'shared/navbar' %>
-    <%= render 'shared/flashes' %>
-  HTML
+    @import "footer";
+  CSS
 end
+
+inject_into_file 'app/assets/stylesheets/application.scss', after: '@import "pages/index";' do
+  <<-CSS
+
+    .hidden {
+      display: none !important;
+    }
+  CSS
+end
+
+run 'rm app/views/layouts/application.html.erb'
+file 'app/views/layouts/application.html.erb', <<~HTML
+  <!DOCTYPE html>
+  <html lang="fr">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+      <!-- Meta data -->
+      <title>App name</title>
+      <meta name="Language" content="fr" />
+      <meta name="description" content="app description">
+
+      <!-- csrf & csp -->
+      <%= csrf_meta_tags %>
+      <%= csp_meta_tag %>
+
+      <!-- import CSS & JS files -->
+      <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+      <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload', defer: true %>
+      <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload', defer: true %>
+    </head>
+
+    <body>
+      <!-- notices & alerts -->
+      <%= render 'shared/flashes' %>
+
+      <!-- navbar -->
+      <%= render 'shared/navbar' %>
+
+      <!-- main content -->
+      <main role="main">
+        <%= yield %>
+      </main>
+
+      <!-- footer -->
+      <%= render 'shared/footer' %>
+
+      <!-- noscript tag when JS brower is OFF -->
+      <noscript>Votre navigateur web a bloqué le JavaScript. C'est important de le débloquer pour profiter de toutes les fonctionnallités de ce site web !</noscript>
+    </body>
+  </html>
+HTML
 
 # README
 ########################################
