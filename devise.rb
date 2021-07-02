@@ -128,6 +128,8 @@ file 'app/views/shared/_flashes.html.erb', <<~HTML
   <% end %>
 HTML
 
+# Navbar & footer
+########################################
 run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/_navbar_wagon.html.erb > app/views/shared/_navbar.html.erb'
 run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/_footer_bertrand.html.erb > app/views/shared/_footer.html.erb'
 run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/_footer.scss > app/assets/stylesheets/components/_footer.scss'
@@ -218,19 +220,19 @@ inject_into_file 'config/application.rb', after: 'config.load_defaults 5.2' do
   <<~RUBY
 
 
-      # Set the default local language
-      config.i18n.default_locale = :fr
+    # Set the default local language
+    config.i18n.default_locale = :fr
 
-      # hearders for security
-      config.action_dispatch.default_headers = {
-        'X-Frame-Options' => 'SAMEORIGIN',
-        'X-XSS-Protection' => '1; mode=block',
-        'X-Content-Type-Options' => 'nosniff',
-        'X-Download-Options' => 'noopen',
-        'X-Permitted-Cross-Domain-Policies' => 'none',
-        'Referrer-Policy' => 'strict-origin-when-cross-origin',
-        'Access-Control-Allow-Origin' => '*'
-      }
+    # hearders for security
+    config.action_dispatch.default_headers = {
+      'X-Frame-Options' => 'SAMEORIGIN',
+      'X-XSS-Protection' => '1; mode=block',
+      'X-Content-Type-Options' => 'nosniff',
+      'X-Download-Options' => 'noopen',
+      'X-Permitted-Cross-Domain-Policies' => 'none',
+      'Referrer-Policy' => 'strict-origin-when-cross-origin',
+      'Access-Control-Allow-Origin' => '*'
+    }
   RUBY
 end
 
@@ -449,7 +451,7 @@ after_bundle do
   ########################################
   run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/fr.yml > config/locales/fr.yml'
 
-  # Other fr translation
+  # simple_form fr translation
   ########################################
   run 'rm config/locales/simple_form.en.yml'
   file 'config/locales/simple_form.en.yml', <<~YAML
@@ -494,13 +496,13 @@ after_bundle do
   ########################################
   run 'curl -L https://raw.githubusercontent.com/lewagon/rails-templates/master/.rubocop.yml > .rubocop.yml'
 
+  # Fix puma config
+  gsub_file('config/puma.rb', 'pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }', '# pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }')
+
   # Git
   ########################################
   git add: '.'
   git commit: "-m 'Initial commit with devise template from https://github.com/lewagon/rails-templates'"
-
-  # Fix puma config
-  gsub_file('config/puma.rb', 'pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }', '# pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }')
 end
 
 # Pundit install
@@ -512,9 +514,9 @@ generate('pundit:install')
 inject_into_file 'app/policies/application_policy.rb', before: 'class Scope' do
   <<~RUBY
 
-      def user_loggedin?
-        user != nil
-      end
+    def user_loggedin?
+      user != nil
+    end
 
   RUBY
 end
