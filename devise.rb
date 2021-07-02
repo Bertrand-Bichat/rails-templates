@@ -32,7 +32,7 @@ end
 
 # N+1 query (bullet)
 ########################################
-inject_into_file 'config/environments/development.rb', before: 'config.file_watcher' do
+inject_into_file 'config/environments/development.rb', before: '# Use an evented file watcher to asynchronously detect changes in source code,' do
   <<~RUBY
 
     # Bullet N+1 query
