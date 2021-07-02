@@ -32,17 +32,17 @@ end
 
 # N+1 query (bullet)
 ########################################
-inject_into_file 'config/environments/development.rb', before: '# Use an evented file watcher to asynchronously detect changes in source code,' do
-  <<~RUBY
+# inject_into_file 'config/environments/development.rb', before: '# Use an evented file watcher to asynchronously detect changes in source code,' do
+#   <<~RUBY
 
-    # Bullet N+1 query
-    config.after_initialize do
-      Bullet.enable = true
-      Bullet.rails_logger = true
-    end
+#     # Bullet N+1 query
+#     config.after_initialize do
+#       Bullet.enable = true
+#       Bullet.rails_logger = true
+#     end
 
-  RUBY
-end
+#   RUBY
+# end
 
 # cache control expire
 ########################################
