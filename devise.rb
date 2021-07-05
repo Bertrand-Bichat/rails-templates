@@ -19,6 +19,11 @@ inject_into_file 'Gemfile', after: 'group :development, :test do' do
   gem 'pry-byebug'
   gem 'pry-rails'
   gem 'dotenv-rails'
+  gem 'rspec-rails', '~> 4.1.0'
+  gem 'guard-rspec', require: false
+  gem 'factory_bot_rails'
+  gem 'database_cleaner'
+  gem 'simplecov', require: false
   RUBY
 end
 
@@ -208,7 +213,7 @@ generators = <<~RUBY
   config.generators do |generate|
     generate.assets false
     generate.helper false
-    generate.test_framework :test_unit, fixture: false
+    generate.test_framework :rspec, fixture: false
   end
 RUBY
 
@@ -259,6 +264,10 @@ after_bundle do
     *.swp
     .DS_Store
   TXT
+
+  # Rspec install
+  ########################################
+  generate('rspec:install')
 
   # Devise install + user
   ########################################
