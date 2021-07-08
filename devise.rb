@@ -242,6 +242,37 @@ inject_into_file 'config/application.rb', after: 'config.load_defaults 5.2' do
   RUBY
 end
 
+# Pundit install
+########################################
+generate('pundit:install')
+
+# Pundit default policy
+########################################
+inject_into_file 'app/policies/application_policy.rb', before: 'class Scope' do
+  <<~RUBY
+
+    def user_loggedin?
+      user != nil
+    end
+
+  RUBY
+end
+
+# Pundit page policy
+########################################
+file 'app/policies/page_policy.rb', <<~RUBY
+  class PagePolicy < Struct.new(:user, :page)
+
+    def home?
+      true
+    end
+
+    def user_loggedin?
+      user != nil
+    end
+  end
+RUBY
+
 ########################################
 # AFTER BUNDLE
 ########################################
@@ -514,34 +545,3 @@ after_bundle do
   git add: '.'
   git commit: "-m 'Initial commit with devise template from https://github.com/lewagon/rails-templates'"
 end
-
-# Pundit install
-########################################
-generate('pundit:install')
-
-# Pundit default policy
-########################################
-inject_into_file 'app/policies/application_policy.rb', before: 'class Scope' do
-  <<~RUBY
-
-    def user_loggedin?
-      user != nil
-    end
-
-  RUBY
-end
-
-# Pundit page policy
-########################################
-file 'app/policies/page_policy.rb', <<~RUBY
-  class PagePolicy < Struct.new(:user, :page)
-
-    def home?
-      true
-    end
-
-    def user_loggedin?
-      user != nil
-    end
-  end
-RUBY
