@@ -219,9 +219,9 @@ after_bundle do
   # migrate + devise views
   ########################################
   rails_command 'db:migrate'
-  # generate('devise:views')
+  generate('devise:views')
   # run 'rm app/views/devise'
-  run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/devise > app/views/devise'
+  # run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/devise > app/views/devise'
 
   # Pages Controller
   ########################################
