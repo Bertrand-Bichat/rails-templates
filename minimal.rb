@@ -33,27 +33,14 @@ end
 inject_into_file 'config/environments/development.rb', before: '# Use an evented file watcher to asynchronously detect changes in source code,' do
   <<~RUBY
 
-      # Bullet N+1 query
-      config.after_initialize do
-        Bullet.enable = true
-        Bullet.rails_logger = true
-      end
+    # Bullet N+1 query
+    config.after_initialize do
+      Bullet.enable = true
+      Bullet.rails_logger = true
+    end
 
   RUBY
 end
-
-# cache control expire
-########################################
-# inject_into_file 'config/environments/production.rb', before: '# Compress JavaScripts and CSS.' do
-#   <<~RUBY
-
-#     config.public_file_server.headers = {
-#       'Cache-Control' => 'public, s-maxage=31536000, max-age=15552000',
-#       'Expires' => "#{1.year.from_now.to_formatted_s(:rfc822)}"
-#     }
-
-#   RUBY
-# end
 
 # Procfile
 ########################################
@@ -81,50 +68,15 @@ TXT
 ########################################
 gsub_file('config/environments/development.rb', /config\.assets\.debug.*/, 'config.assets.debug = false')
 
-# Layout
-########################################
-if Rails.version < "6"
-  scripts = <<~HTML
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload', defer: true %>
-        <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
-  HTML
-  gsub_file('app/views/layouts/application.html.erb', "<%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>", scripts)
-end
-
-gsub_file('app/views/layouts/application.html.erb', "<%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>", "<%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload', defer: true %>")
-
-style = <<~HTML
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-      <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-HTML
-gsub_file('app/views/layouts/application.html.erb', "<%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>", style)
-
 # Flashes
 ########################################
-file 'app/views/shared/_flashes.html.erb', <<~HTML
-  <% if notice %>
-    <div class="alert alert-info alert-dismissible fade show m-1" role="status">
-      <%= notice %>
-      <button type="button" class="close" data-dismiss="alert" aria-label="Fermer">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-  <% end %>
-  <% if alert %>
-    <div class="alert alert-warning alert-dismissible fade show m-1" role="alert">
-      <%= alert %>
-      <button type="button" class="close" data-dismiss="alert" aria-label="Fermer">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-  <% end %>
-HTML
+run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/html/_flashes.html.erb > app/views/shared/_flashes.html.erb'
 
 # Navbar & footer
 ########################################
-run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/_navbar_wagon_without_login.html.erb > app/views/shared/_navbar.html.erb'
-run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/_footer_bertrand.html.erb > app/views/shared/_footer.html.erb'
-run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/_footer.scss > app/assets/stylesheets/components/_footer.scss'
+run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/html/_navbar_wagon_without_login.html.erb > app/views/shared/_navbar.html.erb'
+run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/html/_footer_bertrand.html.erb > app/views/shared/_footer.html.erb'
+run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/css/_footer.scss > app/assets/stylesheets/components/_footer.scss'
 
 inject_into_file 'app/assets/stylesheets/components/_index.scss', after: '@import "navbar";' do
   <<-CSS
@@ -133,6 +85,8 @@ inject_into_file 'app/assets/stylesheets/components/_index.scss', after: '@impor
   CSS
 end
 
+# CSS
+########################################
 inject_into_file 'app/assets/stylesheets/application.scss', after: '@import "pages/index";' do
   <<-CSS
 
@@ -143,49 +97,10 @@ inject_into_file 'app/assets/stylesheets/application.scss', after: '@import "pag
   CSS
 end
 
+# LAYOUT
+########################################
 run 'rm app/views/layouts/application.html.erb'
-file 'app/views/layouts/application.html.erb', <<~HTML
-  <!DOCTYPE html>
-  <html lang="fr">
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-      <!-- Meta data -->
-      <title>App name</title>
-      <meta name="Language" content="fr" />
-      <meta name="description" content="app description">
-
-      <!-- csrf & csp -->
-      <%= csrf_meta_tags %>
-      <%= csp_meta_tag %>
-
-      <!-- import CSS & JS files -->
-      <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-      <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload', defer: true %>
-      <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload', defer: true %>
-    </head>
-
-    <body>
-      <!-- notices & alerts -->
-      <%= render 'shared/flashes' %>
-
-      <!-- navbar -->
-      <%= render 'shared/navbar' %>
-
-      <!-- main content -->
-      <main role="main">
-        <%= yield %>
-      </main>
-
-      <!-- footer -->
-      <%= render 'shared/footer' %>
-
-      <!-- noscript tag when JS brower is OFF -->
-      <noscript>Votre navigateur web a bloqué le JavaScript. C'est important de le débloquer pour profiter de toutes les fonctionnallités de ce site web !</noscript>
-    </body>
-  </html>
-HTML
+run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/html/application.html.erb > app/views/layouts/application.html.erb'
 
 # README
 ########################################
@@ -259,19 +174,13 @@ after_bundle do
   append_file 'app/javascript/packs/application.js', <<~JS
 
 
-    // ----------------------------------------------------
-    // Note(lewagon): ABOVE IS RAILS DEFAULT CONFIGURATION
-    // WRITE YOUR OWN JS STARTING FROM HERE 👇
-    // ----------------------------------------------------
-
     // External imports
     import "bootstrap";
 
-    // Internal imports, e.g:
+    // Internal imports
     // import { initSelect2 } from '../components/init_select2';
 
     document.addEventListener('turbolinks:load', () => {
-      // Call your functions here, e.g:
       // initSelect2();
     });
   JS
@@ -297,44 +206,12 @@ after_bundle do
 
   # Other fr translation
   ########################################
-  run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/fr.yml > config/locales/fr.yml'
+  run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/yaml/fr.yml > config/locales/fr.yml'
 
   # simple_form fr translation
   ########################################
   run 'rm config/locales/simple_form.en.yml'
-  file 'config/locales/simple_form.en.yml', <<~YAML
-    fr:
-      simple_form:
-        "yes": 'Oui'
-        "no": 'Non'
-        required:
-          text: 'obligatoire'
-          mark: '*'
-          # You can uncomment the line below if you need to overwrite the whole required html.
-          # When using html, text and mark won't be used.
-          # html: '<abbr title="required">*</abbr>'
-        error_notification:
-          default_message: "Erreurs de saisie"
-        # Examples
-        # labels:
-        #   defaults:
-        #     password: 'Password'
-        #   user:
-        #     new:
-        #       email: 'E-mail to sign in.'
-        #     edit:
-        #       email: 'E-mail.'
-        # hints:
-        #   defaults:
-        #     username: 'User name to sign in.'
-        #     password: 'No special characters, please.'
-        # include_blanks:
-        #   defaults:
-        #     age: 'Rather not say'
-        # prompts:
-        #   defaults:
-        #     age: 'Select your age'
-  YAML
+  run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/yaml/simple_form.en.yml > config/locales/simple_form.en.yml'
 
   # Dotenv
   ########################################
