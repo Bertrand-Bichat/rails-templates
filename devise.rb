@@ -53,14 +53,14 @@ YAML
 
 gsub_file('Gemfile', /# gem 'redis'/, "gem 'redis'")
 
-# Assets
+# Assets substitution
 ########################################
 run 'rm -rf app/assets/stylesheets'
 run 'rm -rf vendor'
 run 'curl -L https://github.com/lewagon/rails-stylesheets/archive/master.zip > stylesheets.zip'
 run 'unzip stylesheets.zip -d app/assets && rm stylesheets.zip && mv app/assets/rails-stylesheets-master app/assets/stylesheets'
 
-# robots.txt
+# robots.txt substitution
 ########################################
 run 'rm -rf public/robots.txt'
 file 'public/robots.txt', <<~TXT
@@ -78,9 +78,7 @@ gsub_file('config/environments/production.rb', 'config.assets.js_compressor = :u
 
 # Flashes
 ########################################
-file 'app/views/shared/_flashes.html.erb', <<~HTML
-HTML
-run 'rm app/views/shared/_flashes.html.erb'
+run 'mkdir app/views/shared'
 run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/html/_flashes.html.erb > app/views/shared/_flashes.html.erb'
 
 # Navbar & footer
@@ -108,7 +106,7 @@ inject_into_file 'app/assets/stylesheets/application.scss', after: '@import "pag
   CSS
 end
 
-# LAYOUT
+# LAYOUT substitution
 ########################################
 run 'rm app/views/layouts/application.html.erb'
 run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/html/application.html.erb > app/views/layouts/application.html.erb'
@@ -198,11 +196,7 @@ after_bundle do
     .DS_Store
   TXT
 
-  # Rspec install
-  ########################################
-  # generate('rspec:install')
-
-  # Devise install + user
+  # Devise install + generate user
   ########################################
   generate('devise:install')
   generate('devise', 'User')
@@ -211,19 +205,66 @@ after_bundle do
   ########################################
   run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/ruby/devise_helper.rb > app/helpers/devise_helper.rb'
 
-  # App controller
+  # devise migration + devise views architecture
+  ########################################
+  rails_command 'db:migrate'
+  generate('devise:views')
+
+  # devise confirmations views substitution
+  ########################################
+  run 'rm app/views/devise/confirmations/new.html.erb'
+  run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/devise/confirmations/new.html.erb > app/views/devise/confirmations/new.html.erb'
+
+  # devise mailer views substitution
+  ########################################
+  run 'rm app/views/devise/mailer/confirmation_instructions.html.erb'
+  run 'rm app/views/devise/mailer/email_changed.html.erb'
+  run 'rm app/views/devise/mailer/password_change.html.erb'
+  run 'rm app/views/devise/mailer/reset_password_instructions.html.erb'
+  run 'rm app/views/devise/mailer/unlock_instructions.html.erb'
+  run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/devise/mailer/confirmation_instructions.html.erb > app/views/devise/mailer/confirmation_instructions.html.erb'
+  run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/devise/mailer/email_changed.html.erb > app/views/devise/mailer/email_changed.html.erb'
+  run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/devise/mailer/password_change.html.erb > app/views/devise/mailer/password_change.html.erb'
+  run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/devise/mailer/reset_password_instructions.html.erb > app/views/devise/mailer/reset_password_instructions.html.erb'
+  run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/devise/mailer/unlock_instructions.html.erb > app/views/devise/mailer/unlock_instructions.html.erb'
+
+  # devise passwords views substitution
+  ########################################
+  run 'rm app/views/devise/passwords/edit.html.erb'
+  run 'rm app/views/devise/passwords/new.html.erb'
+  run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/devise/passwords/edit.html.erb > app/views/devise/passwords/edit.html.erb'
+  run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/devise/passwords/new.html.erb > app/views/devise/passwords/new.html.erb'
+
+  # devise registrations views substitution
+  ########################################
+  run 'rm app/views/devise/registrations/edit.html.erb'
+  run 'rm app/views/devise/registrations/new.html.erb'
+  run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/devise/registrations/edit.html.erb > app/views/devise/registrations/edit.html.erb'
+  run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/devise/registrations/new.html.erb > app/views/devise/registrations/new.html.erb'
+
+  # devise sessions views substitution
+  ########################################
+  run 'rm app/views/devise/sessions/new.html.erb'
+  run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/devise/sessions/new.html.erb > app/views/devise/sessions/new.html.erb'
+
+  # devise shared views substitution
+  ########################################
+  run 'rm app/views/devise/shared/_error_messages.html.erb'
+  run 'rm app/views/devise/shared/_links.html.erb'
+  run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/devise/shared/_error_messages.html.erb > app/views/devise/shared/_error_messages.html.erb'
+  run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/devise/shared/_links.html.erb > app/views/devise/shared/_links.html.erb'
+
+  # devise unlocks views substitution
+  ########################################
+  run 'rm app/views/devise/unlocks/new.html.erb'
+  run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/devise/unlocks/new.html.erb > app/views/devise/unlocks/new.html.erb'
+
+  # Application controller substitution
   ########################################
   run 'rm app/controllers/application_controller.rb'
   run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/ruby/application_controller.rb > app/controllers/application_controller.rb'
 
-  # migrate + devise views
-  ########################################
-  rails_command 'db:migrate'
-  generate('devise:views')
-  # run 'rm app/views/devise'
-  # run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/devise > app/views/devise'
-
-  # Pages Controller
+  # Pages Controller substitution
   ########################################
   run 'rm app/controllers/pages_controller.rb'
   run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/ruby/pages_controller.rb > app/controllers/pages_controller.rb'
@@ -274,7 +315,7 @@ after_bundle do
   ########################################
   run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/yaml/fr.yml > config/locales/fr.yml'
 
-  # simple_form fr translation
+  # simple_form fr translation substitution
   ########################################
   run 'rm config/locales/simple_form.en.yml'
   run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/yaml/simple_form.en.yml > config/locales/simple_form.en.yml'

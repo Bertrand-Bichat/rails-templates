@@ -49,14 +49,14 @@ file 'Procfile', <<~YAML
   web: bundle exec puma -C config/puma.rb
 YAML
 
-# Assets
+# Assets substitution
 ########################################
 run 'rm -rf app/assets/stylesheets'
 run 'rm -rf vendor'
 run 'curl -L https://github.com/lewagon/rails-stylesheets/archive/master.zip > stylesheets.zip'
 run 'unzip stylesheets.zip -d app/assets && rm stylesheets.zip && mv app/assets/rails-stylesheets-master app/assets/stylesheets'
 
-# robots.txt
+# robots.txt substitution
 ########################################
 run 'rm -rf public/robots.txt'
 file 'public/robots.txt', <<~TXT
@@ -70,9 +70,7 @@ gsub_file('config/environments/development.rb', /config\.assets\.debug.*/, 'conf
 
 # Flashes
 ########################################
-file 'app/views/shared/_flashes.html.erb', <<~HTML
-HTML
-run 'rm app/views/shared/_flashes.html.erb'
+run 'mkdir app/views/shared'
 run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/html/_flashes.html.erb > app/views/shared/_flashes.html.erb'
 
 # Navbar & footer
@@ -100,7 +98,7 @@ inject_into_file 'app/assets/stylesheets/application.scss', after: '@import "pag
   CSS
 end
 
-# LAYOUT
+# LAYOUT substitution
 ########################################
 run 'rm app/views/layouts/application.html.erb'
 run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/html/application.html.erb > app/views/layouts/application.html.erb'
@@ -211,7 +209,7 @@ after_bundle do
   ########################################
   run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/yaml/fr.yml > config/locales/fr.yml'
 
-  # simple_form fr translation
+  # simple_form fr translation substitution
   ########################################
   run 'rm config/locales/simple_form.en.yml'
   run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/yaml/simple_form.en.yml > config/locales/simple_form.en.yml'
