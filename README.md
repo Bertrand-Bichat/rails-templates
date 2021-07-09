@@ -7,7 +7,10 @@ some custom personal additions.
 
 ## Minimal
 
-Get a minimal rails app ready to be deployed on Heroku with Bootstrap, Simple form and debugging gems.
+Get a minimal rails app ready to be deployed on Heroku (Procfile) with Bootstrap + Simple form +
+debugging gems + N+1 queries gems + custom navbar + custom footer + custom layout +
+YAML files for French translation of flashes +
+robots.txt file configured to not index all the website
 
 ```bash
 rails new \
@@ -19,9 +22,9 @@ rails new \
 
 ## Devise
 
-Same as minimal **plus** a Devise install with a generated `User` model + Pundit authorization gem +
-N+1 queries gems + Procfile ready to use for Heroku + robots.txt file configured to not index all
-the website + YAML files for French translation of Devise and Simple Form flashes.
+Same as minimal **plus** a Devise install with a generated `User` model +
+Pundit authorization gem + all Devise views with French text and better CSS +
+custom controllers (app. and pages)
 
 ```bash
 rails new \
