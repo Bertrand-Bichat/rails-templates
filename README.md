@@ -24,7 +24,7 @@ rails new \
 
 Same as minimal **plus** a Devise install with a generated `User` model +
 Pundit authorization gem + all Devise views with French text and better CSS +
-custom controllers (app. and pages)
+custom controllers (app. and pages) + custom seeds.
 
 ```bash
 rails new \
