@@ -89,5 +89,5 @@ after_bundle do
   # Git
   ########################################
   git add: '.'
-  git commit: "-m 'Initial commit with api template"
+  git commit: "-m 'Initial commit with api template'"
 end
