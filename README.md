@@ -33,3 +33,15 @@ rails new \
   -m https://raw.githubusercontent.com/Bertrand-Bichat/rails-templates/master/devise.rb \
   CHANGE_THIS_TO_YOUR_RAILS_APP_NAME
 ```
+
+## API
+
+Get an API rails backend ready to be deployed on Heroku (Procfile).
+
+```bash
+rails new \
+  --database postgresql \
+  --api \
+  -m https://raw.githubusercontent.com/Bertrand-Bichat/rails-templates/master/api.rb \
+  CHANGE_THIS_TO_YOUR_RAILS_APP_NAME
+```
