@@ -36,12 +36,18 @@ file 'public/robots.txt', <<~TXT
   Disallow: /
 TXT
 
+# README
+########################################
+markdown_file_content = <<~MARKDOWN
+  Rails app generated with [lewagon/rails-templates](https://github.com/lewagon/rails-templates), created by the [Le Wagon coding bootcamp](https://www.lewagon.com) team.
+MARKDOWN
+file 'README.md', markdown_file_content, force: true
 
 ########################################
 # AFTER BUNDLE
 ########################################
 after_bundle do
-  # Generators: db + simple form + pages controller
+  # Generators: db + pages controller
   ########################################
   rails_command 'db:drop db:create db:migrate'
   generate(:controller, 'pages', 'home', '--skip-routes', '--no-test-framework')
