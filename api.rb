@@ -8,9 +8,6 @@ inject_into_file 'Gemfile', before: 'group :development, :test do' do
     gem 'rack-cors'
     gem 'jwt'
 
-    # seeds
-    gem 'faker', :git => 'https://github.com/faker-ruby/faker.git', :branch => 'master'
-
   RUBY
 end
 

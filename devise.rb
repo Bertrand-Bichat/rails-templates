@@ -10,9 +10,6 @@ inject_into_file 'Gemfile', before: 'group :development, :test do' do
     gem 'simple_form'
     gem 'pundit'
 
-    # seeds
-    gem 'faker', :git => 'https://github.com/faker-ruby/faker.git', :branch => 'master'
-
   RUBY
 end
 
@@ -274,8 +271,8 @@ after_bundle do
 
   # Seeds substitution
   ########################################
-  run 'rm db/seeds.rb'
-  run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/ruby/seeds.rb > db/seeds.rb'
+  # run 'rm db/seeds.rb'
+  # run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/ruby/seeds.rb > db/seeds.rb'
 
   # Environments
   ########################################
