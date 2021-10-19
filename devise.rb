@@ -87,15 +87,19 @@ run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templ
 run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/html/_footer_bertrand.html.erb > app/views/shared/_footer.html.erb'
 run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/css/_footer.scss > app/assets/stylesheets/components/_footer.scss'
 
-inject_into_file 'app/assets/stylesheets/components/_index.scss', after: '@import "navbar";' do
-  <<-CSS
+# inject_into_file 'app/assets/stylesheets/components/_index.scss', after: '@import "navbar";' do
+#   <<-CSS
 
-  @import "footer";
-  CSS
-end
+#   @import "footer";
+#   CSS
+# end
 
 # CSS
 ########################################
+run 'rm app/assets/stylesheets/components/_index.scss'
+run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/css/_index.scss > app/assets/stylesheets/components/_index.scss'
+run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/css/_button.scss > app/assets/stylesheets/components/_button.scss'
+
 inject_into_file 'app/assets/stylesheets/application.scss', after: '@import "pages/index";' do
   <<-CSS
 
