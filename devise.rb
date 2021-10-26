@@ -273,6 +273,14 @@ after_bundle do
   run 'rm app/controllers/pages_controller.rb'
   run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/ruby/pages_controller.rb > app/controllers/pages_controller.rb'
 
+  # Registrations Controller added
+  ########################################
+  run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/ruby/registrations_controller.rb > app/controllers/registrations_controller.rb'
+
+  # Devise routes modified
+  ########################################
+  gsub_file('config/routes.rb', 'devise_for :users', "devise_for :users, controllers: { registrations: 'registrations' }")
+
   # Seeds substitution
   ########################################
   # run 'rm db/seeds.rb'
