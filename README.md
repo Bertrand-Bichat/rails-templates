@@ -7,7 +7,7 @@ some custom personal additions.
 
 ## Minimal
 
-Get a minimal rails app ready to be deployed on Heroku (Procfile) with Bootstrap + Stimulus + Simple form +
+Get a minimal rails app ready to be deployed on Heroku (Procfile + app.json) with Bootstrap + Stimulus + Simple form +
 debugging gems + N+1 queries gems + custom navbar + custom footer + custom layout +
 YAML files for French translation of flashes +
 robots.txt file configured to not index all the website
@@ -36,7 +36,7 @@ rails new \
 
 ## API
 
-Get an API rails backend ready to be deployed on Heroku (Procfile).
+Get an API rails backend ready to be deployed on Heroku.
 
 ```bash
 rails new \

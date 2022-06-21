@@ -18,8 +18,9 @@ inject_into_file 'Gemfile', after: 'group :development, :test do' do
   RUBY
 end
 
-# Procfile
+# Heroku setup
 ########################################
+run 'curl -L https://github.com/Bertrand-Bichat/awesome-navbars/raw/master/templates/json/app.json > app.json'
 file 'Procfile', <<~YAML
   release: bundle exec rails db:migrate
   web: bundle exec puma -C config/puma.rb
