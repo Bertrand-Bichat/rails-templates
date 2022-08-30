@@ -1,10 +1,5 @@
 # Rails Templates
 
-Quickly generate a rails app with the default [Wagon](https://www.lewagon.com) configuration
-using [Rails Templates](http://guides.rubyonrails.org/rails_application_templates.html) +
-some custom personal additions.
-
-
 ## Minimal
 
 Get a minimal rails app ready to be deployed on Heroku (Procfile + app.json) with Bootstrap + Stimulus + Simple form +
@@ -17,7 +12,7 @@ rails new \
   --database postgresql \
   --webpack \
   -m https://raw.githubusercontent.com/Bertrand-Bichat/rails-templates/master/minimal.rb \
-  CHANGE_THIS_TO_YOUR_RAILS_APP_NAME
+  YOUR_APP_NAME
 ```
 
 ## Devise
@@ -31,7 +26,7 @@ rails new \
   --database postgresql \
   --webpack \
   -m https://raw.githubusercontent.com/Bertrand-Bichat/rails-templates/master/devise.rb \
-  CHANGE_THIS_TO_YOUR_RAILS_APP_NAME
+  YOUR_APP_NAME
 ```
 
 ## API
@@ -43,5 +38,5 @@ rails new \
   --database postgresql \
   --api \
   -m https://raw.githubusercontent.com/Bertrand-Bichat/rails-templates/master/api.rb \
-  CHANGE_THIS_TO_YOUR_RAILS_APP_NAME
+  YOUR_APP_NAME
 ```
