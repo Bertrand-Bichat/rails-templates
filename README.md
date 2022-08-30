@@ -1,10 +1,5 @@
 # Rails Templates
 
-Quickly generate a rails app with the default [Wagon](https://www.lewagon.com) configuration
-using [Rails Templates](http://guides.rubyonrails.org/rails_application_templates.html) +
-some custom personal additions.
-
-
 ## Minimal
 
 Get a minimal rails app ready to be deployed on Heroku (Procfile + app.json) with Bootstrap + Stimulus + Simple form +
