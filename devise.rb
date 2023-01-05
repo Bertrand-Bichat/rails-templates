@@ -26,7 +26,6 @@ inject_into_file 'Gemfile', after: 'group :development do' do
   <<-RUBY
 
   gem 'bullet'
-  gem 'rack-mini-profiler'
   RUBY
 end
 
