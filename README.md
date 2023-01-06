@@ -1,4 +1,4 @@
-# Rails Templates
+# Rails 5.2 Templates
 
 ## Minimal
 
